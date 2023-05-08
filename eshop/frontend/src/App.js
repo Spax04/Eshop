@@ -1,14 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import data from './data'
+import {BrowserRouter, Route, Routes, Link} from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
 
-function App() {
+
+function App () {
+  console.log(data)
+
   return (
-    <div className="App">
-      <header >
-        <a href="#">Eshop</a>
+    <BrowserRouter>
+    
+    <div>
+      <header>
+        <Link to='/'>Eshop</Link>
       </header>
+      <main>
+        <Routes>
+          <Route  path="/" element={<HomePage/>}/>
+          <Route path='/product/:token' element={<ProductPage/>}/>
+        </Routes>
+        
+      </main>
     </div>
-  );
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

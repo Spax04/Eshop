@@ -18,4 +18,27 @@ header a{
   font-weight: bold;
   text-decoration: none;
 }
+main{
+  padding: 1rem;
 
+}
+
+.product-desc{
+  padding: 1rem;
+}
+
+.main-inner{
+  display: flex;
+  flex-wrap: wrap;
+}
+.products{
+  border: 2px solid #404040;
+  margin: 1rem;
+  width: 30%;
+
+}
+
+.products img{
+  width: 100%;
+  
+}
