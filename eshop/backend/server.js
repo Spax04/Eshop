@@ -24,6 +24,8 @@ app.use("/api/v1/product/token/:token", async (req,res)=>{
   }
 });
 
+
+
 app.use("/api/v1/products/:_id", async (req,res)=>{
   const product = await data.products.find(x => x._id === req.params._id);
   if(product){

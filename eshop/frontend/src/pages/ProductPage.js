@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { useEffect, useReducer, useContext } from 'react'
 import axios from 'axios'
@@ -14,6 +15,7 @@ import Loading from '../components/Loading'
 import MessageBox from '../components/MessageBox'
 import { getError } from '../utils'
 import { Store } from '../store'
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -32,6 +34,7 @@ const reducer = (state, action) => {
 }
 
 function ProductPage () {
+  const navigate = useNavigate()
   const params = useParams()
 
   const { token } = params
@@ -65,10 +68,12 @@ function ProductPage () {
 
   const { cart } = state
 
-  const addToCartHandler = async () => {
+  const addToCartHandler = async (item) => {
     const existItem = cart.cartItems.find(x => x._id === product._id)
 
     const quantity = existItem ? existItem.quantity + 1 : 1
+
+   // \const { data } = await axios.get(`.api/v1/products/${item._id}`) // ?
 
     if (product.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock')
@@ -80,6 +85,7 @@ function ProductPage () {
       type: 'ADD_TO_CART',
       payload: { ...product, quantity: quantity }
     })
+    navigate('/cart');
   }
 
   return (
@@ -145,7 +151,7 @@ function ProductPage () {
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <div className='d-grid'>
-                        <Button onClick={addToCartHandler} variant='primary'>
+                        <Button onClick={()=>addToCartHandler(product)}  variant='primary'>
                           Add to Cart
                         </Button>
                       </div>

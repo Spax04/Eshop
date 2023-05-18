@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 const data = {
   products: [
     {
+      _id:"1",
       title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
       price: 109.95,
       description:
@@ -18,6 +19,7 @@ const data = {
       }
     },
     {
+      _id:"2",
       title: 'Mens Casual Premium Slim Fit T-Shirts',
       price: 22.3,
       description:
@@ -34,6 +36,7 @@ const data = {
       }
     },
     {
+      _id:"3",
       title: 'Mens Cotton Jacket',
       price: 55.99,
       description:
@@ -49,6 +52,7 @@ const data = {
       }
     },
     {
+      _id:"4",
       title: 'Mens Casual Slim Fit',
       price: 15.99,
       description:

@@ -2,6 +2,7 @@ import './App.css'
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
+import CartPage from './pages/CartPage'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -42,6 +43,7 @@ function App () {
             <Routes>
               <Route path='/' element={<HomePage />} />
               <Route path='/product/:token' element={<ProductPage />} />
+              <Route path='/cart' element={<CartPage />} />
             </Routes>
           </Container>
         </main>
