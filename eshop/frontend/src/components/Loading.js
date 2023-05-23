@@ -1,5 +1,4 @@
-import React from 'react'
-import Spinner from 'react-bootstrap/Spinner'
+import {Spinner} from '../imports'
 
 function Loading () {
   return (

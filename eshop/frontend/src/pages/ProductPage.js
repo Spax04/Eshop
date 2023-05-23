@@ -1,37 +1,28 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
-import { useEffect, useReducer, useContext } from 'react'
-import axios from 'axios'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import ListGroup from 'react-bootstrap/ListGroup'
-import Rating from '../components/Rating'
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Badge from 'react-bootstrap/Badge'
-import { Helmet } from 'react-helmet-async'
-import Loading from '../components/Loading'
-import MessageBox from '../components/MessageBox'
-import { getError } from '../utils'
-import { Store } from '../store'
-
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'GET_REQUEST':
-      return { ...state, loading: true }
-
-    case 'GET_SUCCESS':
-      return { ...state, product: action.payload, loading: false }
-
-    case 'GET_FAIL':
-      return { ...state, loading: false, error: action.payload }
-
-    default:
-      return state
-  }
-}
+import {
+  React,
+  useLocation,
+  useNavigate,
+  useParams,
+  useEffect,
+  useReducer,
+  useContext,
+  axios,
+  Row,
+  Col,
+  ListGroup,
+  Rating,
+  Card,
+  Button,
+  Badge,
+  Helmet,
+  Loading,
+  MessageBox,
+  getError,
+  Store,
+  LocationContext,
+  UploadingReducer,
+  addToCartHandler
+} from '../imports'
 
 function ProductPage () {
   const navigate = useNavigate()
@@ -39,18 +30,21 @@ function ProductPage () {
 
   const { token } = params
 
-  const [{ loading, error, product }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, product }, dispatch] = useReducer(UploadingReducer, {
     loading: true,
     error: '',
     product: []
   })
+
+  const location = useLocation()
+  const { dispatch: locationDispatch } = useContext(LocationContext)
 
   useEffect(() => {
     const getProduct = async () => {
       dispatch({ type: 'GET_REQUEST' })
 
       try {
-        const res = await axios.get(`/api/v1/product/token/${token}`) //try catch
+        const res = await axios.get(`/api/v1/products/token/${token}`) //try catch
 
         dispatch({ type: 'GET_SUCCESS', payload: res.data })
       } catch (err) {
@@ -60,32 +54,28 @@ function ProductPage () {
       //setProducts(res.data);
     }
 
+    const getCurrentLocation = async () => {
+      locationDispatch({
+        type: 'UPDATE_LOCATION',
+        currentLocation: location.pathname
+      })
+    }
+
     getProduct()
+    getCurrentLocation()
   }, [token])
 
+
   // Calling reducer from Store context to add elemnts to cart
-  const { state, dispatch: cxtDispatch } = useContext(Store)
+  const { state, dispatch: ctxDispatch } = useContext(Store)
 
   const { cart } = state
 
-  const addToCartHandler = async (item) => {
-    const existItem = cart.cartItems.find(x => x._id === product._id)
+  const addToCart = async () => {
+    const { data } = await axios.get(`/api/v1/products/${product._id}`)
 
-    const quantity = existItem ? existItem.quantity + 1 : 1
-
-   // \const { data } = await axios.get(`.api/v1/products/${item._id}`) // ?
-
-    if (product.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock')
-
-      return
-    }
-
-    cxtDispatch({
-      type: 'ADD_TO_CART',
-      payload: { ...product, quantity: quantity }
-    })
-    navigate('/cart');
+    addToCartHandler(data,cart.cartItems,ctxDispatch);
+    navigate('/cart')
   }
 
   return (
@@ -151,7 +141,10 @@ function ProductPage () {
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <div className='d-grid'>
-                        <Button onClick={()=>addToCartHandler(product)}  variant='primary'>
+                        <Button
+                          onClick={() => addToCart(product)}
+                          variant='primary'
+                        >
                           Add to Cart
                         </Button>
                       </div>

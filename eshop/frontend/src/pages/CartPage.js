@@ -1,39 +1,62 @@
-import React, { useContext } from 'react'
-import { Store } from '../store'
-import { Helmet } from 'react-helmet-async'
-import MessageBox from '../components/MessageBox'
-import { Card, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
-import Button from 'react-bootstrap/Button'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import {
+  React,
+  useContext,
+  useEffect,
+  Store,
+  Helmet,
+  MessageBox,
+  Card,
+  Col,
+  ListGroup,
+  Row,
+  Button,
+  Link,
+  useNavigate,
+  useLocation,
+  axios,
+  LocationContext
+} from '../imports'
 
 function CartPage () {
-  const { state, dispatch: cxtDispatch } = useContext(Store)
+  const { state, dispatch: ctxDispatch } = useContext(Store)
+
+  const location = useLocation()
+  const { dispatch: locationDispatch } = useContext(LocationContext)
 
   const navigate = useNavigate()
   const {
     cart: { cartItems }
   } = state
 
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      locationDispatch({
+        type: 'UPDATE_LOCATION',
+        currentLocation: location.pathname
+      })
+    }
+
+    getCurrentLocation()
+  }, [])
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/v1/products/${item._id}`)
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock')
       return
     }
-    cxtDispatch({ type: 'ADD_TO_CART', payload: { ...item, quantity } })
+    ctxDispatch({ type: 'ADD_TO_CART', payload: { ...item, quantity } })
   }
 
   const removeCartHandler = async item => {
     const { data } = await axios.get(`/api/v1/products/${item._id}`)
 
-    cxtDispatch({ type: 'REMOVE_FROM_CART', payload: item })
+    ctxDispatch({ type: 'REMOVE_FROM_CART', payload: item })
   }
 
   const checkoutHandler = () => {
-    
-    navigate('/signin?redirect=/shipping');
-    
+
+    // If user is not signed in, he is redirecting first to SignIn page and then to shipping page
+    navigate('/signin?redirect=/shipping')
   }
   return (
     <div>
@@ -60,7 +83,7 @@ function CartPage () {
                         className='img-fluid rounded img-thumbnail'
                       ></img>{' '}
                       <Link
-                        to={`/products/${item.token}`}
+                        to={`/product/${item.token}`}
                         className='image-tumbnail'
                       >
                         {item.title}

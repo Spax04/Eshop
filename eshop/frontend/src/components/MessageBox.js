@@ -1,4 +1,4 @@
-import Alert from 'react-bootstrap/Alert';
+import {Alert} from '../imports';
 
 // Custome alert popup, kind of popup depends on params
 export default function MessageBox(props) {

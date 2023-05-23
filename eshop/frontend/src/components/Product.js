@@ -1,41 +1,43 @@
-import { useEffect, useReducer, useState, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Rating from './Rating'
-import { Store } from '../store'
+import {
+  Link,
+  useNavigate,
+  Button,
+  Rating,
+  Card,
+  useContext,
+  Store,
+  axios,
+  getError,
+  addToCartHandler
+} from '../imports'
+
 //import logger from 'use-reducer-logger'
 
 function Product (props) {
   const navigate = useNavigate()
-  // Adding element to Cart
-  const { state, dispatch: cxtDispatch } = useContext(Store)
+  const { product } = props
+  const { state, dispatch: ctxDispatch } = useContext(Store)
 
   const { cart } = state
-  const addToCartHandler = async () => {
-    const existItem = cart.cartItems.find(x => x._id === product._id)
 
-    const quantity = existItem ? existItem.quantity + 1 : 1
+  const addToCart = async () => {
+    const { data } = await axios.get(`/api/v1/products/${product._id}`)
 
-    // const {data} = await
-
-    if (product.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock')
-
-      return
-    }
-
-    cxtDispatch({
-      type: 'ADD_TO_CART',
-      payload: { ...product, quantity: quantity }
-    })
+    addToCartHandler(data,cart.cartItems,ctxDispatch);
     navigate('/cart')
   }
 
-  const { product } = props
+ // When user drags an object, it contains product._id and keep it if format "text/plain"
+  const handleDragStart = e => {
+    e.dataTransfer.setData('text/plain', product._id)
+  }
+
   return (
-    <Card className='product-card'>
+    <Card
+      draggable='true'
+      onDragStart={handleDragStart}
+      className='product-card'
+    >
       <div className='div-img'>
         <Link to={`/product/${product.token}`}>
           <Card.Img
@@ -55,9 +57,9 @@ function Product (props) {
           numOfReviews={product.rating.count}
         />
         {product.countInStock > 0 ? (
-          <Button onClick={addToCartHandler}>Add to card</Button>
+          <Button onClick={addToCart}>Add to card</Button>
         ) : (
-          <Button onClick={addToCartHandler} variant='white' disabled={true}>
+          <Button onClick={addToCart} variant='white' disabled={true}>
             Out of Stock
           </Button>
         )}
