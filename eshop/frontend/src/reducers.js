@@ -61,15 +61,43 @@ export const CartReducer = (state, action) => {
     }
 
     case 'UPDATE_CART': {
+      const cartItems = action.payload
+
+      return { ...state, cart: { ...state.cart, cartItems } }
+    }
+
+    case 'USER_SIGNIN': {
       // Filtering cuurent cart without specific item
 
-      const cartItems = action.payload
-      // const cartItems =  action.payload
-      
-      // localStorage.setItem('cartItems', JSON.stringify(cartItems))
-
-      return { ...state, cart: { ...state.cart, cartItems} }
+      return { ...state, userInfo: action.payload }
     }
+
+    case 'USER_SIGNUP': {
+      // Filtering cuurent cart without specific item
+
+      return { ...state, userInfo: action.payload }
+    }
+
+    case 'USER_SIGNOUT': {
+      return {
+        ...state,
+        userInfo: null,
+        cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' }
+      }
+    }
+    case 'SAVE_SHIPPING_ADDRESS': {
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload }
+      }
+    }
+    case 'SAVE_PAYMENT_METHOD': {
+      return {
+        ...state,
+        cart: { ...state.cart, paymentMethod: action.payload }
+      }
+    }
+    
 
     default:
       return state

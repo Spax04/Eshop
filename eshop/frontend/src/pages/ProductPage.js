@@ -65,7 +65,6 @@ function ProductPage () {
     getCurrentLocation()
   }, [token])
 
-
   // Calling reducer from Store context to add elemnts to cart
   const { state, dispatch: ctxDispatch } = useContext(Store)
 
@@ -74,7 +73,7 @@ function ProductPage () {
   const addToCart = async () => {
     const { data } = await axios.get(`/api/v1/products/${product._id}`)
 
-    addToCartHandler(data,cart.cartItems,ctxDispatch);
+    addToCartHandler(data, cart.cartItems, ctxDispatch)
     navigate('/cart')
   }
 
@@ -93,6 +92,8 @@ function ProductPage () {
               className='img-large'
             />
           </Col>
+
+          {/* Product information 1*/}
           <Col md={3}>
             <ListGroup variant='flush'>
               <ListGroup.Item>
@@ -101,12 +102,14 @@ function ProductPage () {
                 </Helmet>
                 <h1>{product.title}</h1>
               </ListGroup.Item>
+
               <ListGroup.Item>
                 <Rating
                   rating={product.rating.rate}
                   numOfReviews={product.rating.count}
                 ></Rating>
               </ListGroup.Item>
+
               <ListGroup.Item>Pirce : ${product.price}</ListGroup.Item>
 
               <ListGroup.Item>
@@ -115,6 +118,8 @@ function ProductPage () {
               </ListGroup.Item>
             </ListGroup>
           </Col>
+
+          {/* Product information 2*/}
           <Col md={3}>
             <Card>
               <Card.Body>
@@ -125,6 +130,7 @@ function ProductPage () {
                       <Col>${product.price}</Col>
                     </Row>
                   </ListGroup.Item>
+
                   <ListGroup.Item>
                     <Row>
                       <Col>Status:</Col>
@@ -138,6 +144,7 @@ function ProductPage () {
                     </Row>
                   </ListGroup.Item>
 
+                  {/* Button Add to Cart*/}
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <div className='d-grid'>

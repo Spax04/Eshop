@@ -22,12 +22,12 @@ function Product (props) {
 
   const addToCart = async () => {
     const { data } = await axios.get(`/api/v1/products/${product._id}`)
+    addToCartHandler(data, cart.cartItems, ctxDispatch)
 
-    addToCartHandler(data,cart.cartItems,ctxDispatch);
     navigate('/cart')
   }
 
- // When user drags an object, it contains product._id and keep it if format "text/plain"
+  // When user drags an object, it contains product._id and keep it if format "text/plain"
   const handleDragStart = e => {
     e.dataTransfer.setData('text/plain', product._id)
   }

@@ -12,7 +12,8 @@ import {
   useState,
   Store,
   getError,
-  LocationContext
+  LocationContext,
+  toast
 } from '../imports'
 
 //import { toast } from 'react-toastify'
@@ -42,15 +43,14 @@ export default function SigninPage () {
       // If user was in diffrend page, after signing in, automatacly redirect to page when he was, or to HomePage
       navigate(redirect || '/')
     } catch (err) {
-      alert(getError(err))
-      //toast.error(getError(err))
+      //alert(getError(err))
+      toast.error(getError(err))
     }
   }
   const location = useLocation()
   const { dispatch: locationDispatch } = useContext(LocationContext)
 
   useEffect(() => {
-
     // When user get to this page, he is automatacly redirecting to "redirect" page.
     if (userInfo) {
       navigate(redirect)
@@ -69,7 +69,9 @@ export default function SigninPage () {
       <Helmet>
         <title>Sign In</title>
       </Helmet>
+
       <h1 className='my-3'>Sign In</h1>
+
       <Form onSubmit={submitHandler}>
         <Form.Group className='mb-3' controlId='email'>
           <Form.Label>Email</Form.Label>
@@ -79,6 +81,7 @@ export default function SigninPage () {
             onChange={e => setEmail(e.target.value)}
           />
         </Form.Group>
+
         <Form.Group className='mb-3' controlId='password'>
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -87,13 +90,16 @@ export default function SigninPage () {
             onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
+
         <div className='mb-3'>
           <Button type='submit'>Sign In</Button>
         </div>
+
         <div className='mb-3'>
           New customer?{' '}
           <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
         </div>
+
         <div className='mb-3'>
           Forget Password? <Link to={`/forget-password`}>Reset Password</Link>
         </div>

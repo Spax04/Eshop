@@ -1,4 +1,5 @@
 // Utilit maked for displaying error message
+import {toast,navigate} from "./imports"
 export const getError = error => {
   return error.response && error.response.data.message
     ? error.response.data.message
@@ -23,8 +24,7 @@ export  const addToCartHandler = async (data,cartItems,ctxDispatch)=>{
       type: 'ADD_TO_CART',
       payload: { ...data, quantity: quantity }
     })
-    
   } catch (err) {
-    window.alert(getError(err))
+    toast.error(getError(err))
   }
 }

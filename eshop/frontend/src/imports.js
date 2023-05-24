@@ -18,7 +18,9 @@ import {
   createContext,
   useRef
 } from 'react'
+
 // * React-Bootstrap
+import NavDropdown from 'react-bootstrap/NavDropdown'
 import { LinkContainer } from 'react-router-bootstrap'
 import { ListGroupItem, Nav } from 'react-bootstrap'
 import Container from 'react-bootstrap/Container'
@@ -33,25 +35,41 @@ import Badge from 'react-bootstrap/Badge'
 import { Helmet } from 'react-helmet-async'
 import Form from 'react-bootstrap/Form'
 import Spinner from 'react-bootstrap/Spinner'
-import Alert from 'react-bootstrap/Alert';
+import Alert from 'react-bootstrap/Alert'
+
 // * Components
 import Loading from './components/Loading'
 import MessageBox from './components/MessageBox'
 import Product from './components/Product'
 import NavBar from './components/NavBar'
+import CheckoutSteps from './components/CheckoutSteps'
+
 // * Other
-import { getError,addToCartHandler } from './utils'
+import { getError, addToCartHandler } from './utils'
 import { Store } from './store'
 import { LocationContext } from './location'
 import { UploadingReducer, CartReducer, LocationReducer } from './reducers'
+import { toast ,ToastContainer} from 'react-toastify'
+
+
 // * Pages
 import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import SigninPage from './pages/SigninPage'
+import ShippingAddressPage from './pages/ShippingAddressPage'
+import SignupPage from './pages/SignupPage'
+import PaymentPage from './pages/PaymentPage';
 
 export {
+  PaymentPage,
+  SignupPage,
+  CheckoutSteps,
+  ShippingAddressPage,
+  ToastContainer,
   addToCartHandler,
+  toast,
+  NavDropdown,
   useRef,
   React,
   Link,

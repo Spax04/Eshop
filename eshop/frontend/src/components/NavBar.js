@@ -11,12 +11,13 @@ import {
   Store,
   LocationContext,
   addToCartHandler,
-  axios
+  axios,
+  NavDropdown
 } from '../imports'
 
 function NavBar () {
-  const { state,dispatch:ctxDispatch } = useContext(Store)
-  const { cart } = state
+  const { state, dispatch: ctxDispatch } = useContext(Store)
+  const { cart, userInfo } = state
 
   const { currentLocation } = useContext(LocationContext)
 
@@ -26,13 +27,21 @@ function NavBar () {
     e.preventDefault()
   }
   async function handleDrop (e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const productId = e.dataTransfer.getData('text/plain');
+    const productId = e.dataTransfer.getData('text/plain')
 
-    const {data}= await axios.get(`/api/v1/products/${productId}`);
-    await addToCartHandler(data,cart.cartItems,ctxDispatch)
+    const { data } = await axios.get(`/api/v1/products/${productId}`)
+    await addToCartHandler(data, cart.cartItems, ctxDispatch)
   }
+
+  function signoutHandler(){
+      ctxDispatch({type: "USER_SIGNOUT"})
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("paymentMethod");
+      localStorage.removeItem("shippingAddress");
+  }
+
   return (
     <Navbar bg='dark' variant='dark'>
       <Container>
@@ -62,6 +71,23 @@ function NavBar () {
               </Badge>
             )}
           </Link>
+
+          {userInfo ? (
+            <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
+              <LinkContainer to='/profile'>
+                <NavDropdown.Item>User Profile</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to='/orderhistory'>
+                <NavDropdown.Item>User Profile</NavDropdown.Item>
+              </LinkContainer>
+              <NavDropdown.Divider />
+              <Link onClick={signoutHandler} to="#signout" className='dropdown-item'>Sign out</Link>
+            </NavDropdown>
+          ) : (
+            <Link className='nav-link' to='/signin'>
+              Sign in
+            </Link>
+          )}
         </Nav>
       </Container>
     </Navbar>

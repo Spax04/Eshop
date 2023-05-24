@@ -1,4 +1,5 @@
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter,
   Route,
@@ -10,8 +11,13 @@ import {
   useContext,
   Store,
   NavBar,
-  SigninPage
+  SigninPage,
+  ToastContainer,
+  ShippingAddressPage,
+  SignupPage,
+  PaymentPage
 } from './imports'
+
 
 function App () {
   const { state } = useContext(Store)
@@ -20,21 +26,26 @@ function App () {
   return (
     <BrowserRouter>
       <div className='d-flex flex-column side-allpage'>
-        <NavBar />
-        <main>
-          <Container className='mt-3'>
-            {/* Routs */}
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/product/:token' element={<ProductPage />} />
-              <Route path='/cart' element={<CartPage />} />
-              <Route path='/signin' element={<SigninPage />} />
-            </Routes>
-          </Container>
-        </main>
-        <footer>
-          <div className='text-center'>ALL RIGHTS RESERVED</div>
-        </footer>
+        <ToastContainer position='bottom-center' limit={1}/>
+          <NavBar />
+          <main>
+            <Container className='mt-3'>
+              {/* Routs */}
+              <Routes>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/product/:token' element={<ProductPage />} />
+                <Route path='/cart' element={<CartPage />} />
+                <Route path='/signin' element={<SigninPage />} />
+                <Route path='/signup' element={<SignupPage />} />
+                <Route path='/shipping' element={<ShippingAddressPage />} />
+                <Route path='/payment' element={<PaymentPage />} />
+              </Routes>
+            </Container>
+          </main>
+          <footer>
+            <div className='text-center'>ALL RIGHTS RESERVED</div>
+          </footer>
+
       </div>
     </BrowserRouter>
   )
