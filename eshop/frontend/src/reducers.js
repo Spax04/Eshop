@@ -60,6 +60,17 @@ export const CartReducer = (state, action) => {
       return { ...state, cart: { ...state.cart, cartItems } }
     }
 
+    case 'UPDATE_CART': {
+      // Filtering cuurent cart without specific item
+
+      const cartItems = action.payload
+      // const cartItems =  action.payload
+      
+      // localStorage.setItem('cartItems', JSON.stringify(cartItems))
+
+      return { ...state, cart: { ...state.cart, cartItems} }
+    }
+
     default:
       return state
   }

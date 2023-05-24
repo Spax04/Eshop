@@ -14,7 +14,8 @@ import {
   useNavigate,
   useLocation,
   axios,
-  LocationContext
+  LocationContext,
+  useRef
 } from '../imports'
 
 function CartPage () {
@@ -24,9 +25,13 @@ function CartPage () {
   const { dispatch: locationDispatch } = useContext(LocationContext)
 
   const navigate = useNavigate()
+
   const {
     cart: { cartItems }
   } = state
+
+  const dragItem = useRef()
+  const dragOverItem = useRef()
 
   useEffect(() => {
     const getCurrentLocation = async () => {
@@ -38,6 +43,7 @@ function CartPage () {
 
     getCurrentLocation()
   }, [])
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/v1/products/${item._id}`)
     if (data.countInStock < quantity) {
@@ -54,10 +60,32 @@ function CartPage () {
   }
 
   const checkoutHandler = () => {
-
     // If user is not signed in, he is redirecting first to SignIn page and then to shipping page
     navigate('/signin?redirect=/shipping')
   }
+
+  const dragStart = (e, position) => {
+    dragItem.current = position
+    console.log(e.target.innerHTML)
+  }
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position
+    console.log(e.target.innerHTML)
+  }
+
+  const drop = (e) => {
+    console.log(cartItems)
+    const copyListItems = [...cartItems];
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    console.log(copyListItems)
+    ctxDispatch({type: "UPDATE_CART", payload:copyListItems})
+  };
+
   return (
     <div>
       <Helmet>
@@ -73,8 +101,13 @@ function CartPage () {
             </MessageBox>
           ) : (
             <ListGroup>
-              {cartItems.map(item => (
-                <ListGroup.Item key={item._id}>
+              {cartItems.map((item,index) => (
+                <ListGroup.Item
+                  onDragStart={e => dragStart(e, index)}
+                  onDragEnter={e => dragEnter(e, index)}
+                  onDragEnd={drop}
+                  key={item._id}
+                >
                   <Row className='align-items-center'>
                     <Col md={4}>
                       <img

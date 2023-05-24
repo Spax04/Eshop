@@ -1,3 +1,4 @@
+// * React
 import React from 'react'
 import axios from 'axios'
 import {
@@ -14,7 +15,8 @@ import {
   useReducer,
   useContext,
   useState,
-  createContext
+  createContext,
+  useRef
 } from 'react'
 // * React-Bootstrap
 import { LinkContainer } from 'react-router-bootstrap'
@@ -50,6 +52,7 @@ import SigninPage from './pages/SigninPage'
 
 export {
   addToCartHandler,
+  useRef,
   React,
   Link,
   axios,
