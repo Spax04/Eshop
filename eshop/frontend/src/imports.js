@@ -47,7 +47,7 @@ import CheckoutSteps from './components/CheckoutSteps'
 // * Other
 import { getError, addToCartHandler } from './utils'
 import { Store } from './store'
-import { LocationContext } from './location'
+
 import { UploadingReducer, CartReducer, LocationReducer } from './reducers'
 import { toast ,ToastContainer} from 'react-toastify'
 
@@ -106,7 +106,6 @@ export {
   NavBar,
   getError,
   Store,
-  LocationContext,
   UploadingReducer,
   CartReducer,
   LocationReducer,

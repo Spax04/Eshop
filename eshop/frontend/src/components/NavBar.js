@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import '../App.css'
 import {
   Link,
@@ -9,19 +10,21 @@ import {
   useContext,
   useEffect,
   Store,
-  LocationContext,
+  
   addToCartHandler,
   axios,
-  NavDropdown
+  NavDropdown,
 } from '../imports'
+import useCurrentLocation from '../hooks/useCurrentLocation'
 
 function NavBar () {
   const { state, dispatch: ctxDispatch } = useContext(Store)
   const { cart, userInfo } = state
 
-  const { currentLocation } = useContext(LocationContext)
+ const currentLocation = useCurrentLocation();
 
-  useEffect(() => {}, [currentLocation])
+  useEffect(() => {
+  }, [currentLocation])
 
   function handleDragOver (e) {
     e.preventDefault()
@@ -49,20 +52,15 @@ function NavBar () {
         <LinkContainer to='/'>
           <Navbar.Brand>Eshop</Navbar.Brand>
         </LinkContainer>
-
-        <LinkContainer to='/'>
-          {currentLocation && currentLocation === '/' ? (
-            <span></span>
-          ) : (
-            <Link to='/'>Home</Link>
-          )}
-        </LinkContainer>
         {/* Cart icon */}
+
         <Nav
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           className='ms-auto w-50 justify-content-end'
         >
+          {currentLocation.pathname === "/"? <span></span>:  <Link className='nav-link' to='/'>Back to Home</Link>}
+         
           <Link to='/cart' className='nav-link'>
             <i className='fas fa-shopping-cart'></i>
             {cart.cartItems.length > 0 && (

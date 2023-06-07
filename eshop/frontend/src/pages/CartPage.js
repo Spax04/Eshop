@@ -14,15 +14,12 @@ import {
   useNavigate,
   useLocation,
   axios,
-  LocationContext,
   useRef
 } from '../imports'
 
 function CartPage () {
   const { state, dispatch: ctxDispatch } = useContext(Store)
 
-  const location = useLocation()
-  const { dispatch: locationDispatch } = useContext(LocationContext)
 
   const navigate = useNavigate()
 
@@ -35,10 +32,7 @@ function CartPage () {
 
   useEffect(() => {
     const getCurrentLocation = async () => {
-      locationDispatch({
-        type: 'UPDATE_LOCATION',
-        currentLocation: location.pathname
-      })
+      
     }
 
     getCurrentLocation()

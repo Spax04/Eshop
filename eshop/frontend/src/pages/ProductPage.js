@@ -36,9 +36,6 @@ function ProductPage () {
     product: []
   })
 
-  const location = useLocation()
-  const { dispatch: locationDispatch } = useContext(LocationContext)
-
   useEffect(() => {
     const getProduct = async () => {
       dispatch({ type: 'GET_REQUEST' })
@@ -53,16 +50,8 @@ function ProductPage () {
 
       //setProducts(res.data);
     }
-
-    const getCurrentLocation = async () => {
-      locationDispatch({
-        type: 'UPDATE_LOCATION',
-        currentLocation: location.pathname
-      })
-    }
-
     getProduct()
-    getCurrentLocation()
+
   }, [token])
 
   // Calling reducer from Store context to add elemnts to cart

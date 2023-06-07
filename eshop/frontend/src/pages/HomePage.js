@@ -10,7 +10,6 @@ import {
   Loading,
   getError,
   MessageBox,
-  LocationContext,
   UploadingReducer
 } from '../imports'
 
@@ -23,8 +22,13 @@ function HomePage () {
     product: []
   })
 
-  const location = useLocation()
-  const { dispatch: locationDispatch } = useContext(LocationContext)
+
+
+
+
+
+
+
   useEffect(() => {
     const getProducts = async () => {
       dispatch({ type: 'GET_REQUEST' })
@@ -38,17 +42,8 @@ function HomePage () {
 
       //setProducts(res.data);
     }
-
-    // Updating location on rendering
-    const getCurrentLocation = async () => {
-      console.log(typeof location.pathname)
-      locationDispatch({
-        type: 'UPDATE_LOCATION',
-        payload: location.pathname
-      })
-    }
     getProducts()
-    getCurrentLocation()
+
   }, [])
 
   return (

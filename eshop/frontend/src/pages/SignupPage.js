@@ -55,21 +55,13 @@ import {
         toast.error(getError(err))
       }
     }
-    const location = useLocation()
-    const { dispatch: locationDispatch } = useContext(LocationContext)
+   
   
     useEffect(() => {
       // When user get to this page, he is automatacly redirecting to "redirect" page.
       if (userInfo) {
         navigate(redirect)
       }
-      const getCurrentLocation = async () => {
-        locationDispatch({
-          type: 'UPDATE_LOCATION',
-          currentLocation: location.pathname
-        })
-      }
-      getCurrentLocation()
     }, [navigate, redirect, userInfo])
   
     return (

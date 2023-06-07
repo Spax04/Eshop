@@ -7,20 +7,18 @@ import './index.css'
 import axios from 'axios'
 import { HelmetProvider } from 'react-helmet-async'
 import { StoreProvider } from './store'
-import { LocationProvider } from './location'
 
+// Base url to work with backend
 axios.default.baseURL = 'http://localhost:5000/'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <LocationProvider>
       <StoreProvider>
         <HelmetProvider>
           <App />
         </HelmetProvider>
       </StoreProvider>
-    </LocationProvider>
   </React.StrictMode>
 )
 

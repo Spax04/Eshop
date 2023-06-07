@@ -15,13 +15,15 @@ import {
   ToastContainer,
   ShippingAddressPage,
   SignupPage,
-  PaymentPage
+  PaymentPage,
+  useLocation
 } from './imports'
 
 
 function App () {
   const { state } = useContext(Store)
   const { cart } = state
+
 
   return (
     <BrowserRouter>
