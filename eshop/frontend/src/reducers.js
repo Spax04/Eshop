@@ -42,8 +42,6 @@ export const CartReducer = (state, action) => {
           )
         : [...state.cart.cartItems, newItem]
 
-      console.log(state.cart)
-
       localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
       return { ...state, cart: { ...state.cart, cartItems } }
@@ -64,6 +62,9 @@ export const CartReducer = (state, action) => {
       const cartItems = action.payload
 
       return { ...state, cart: { ...state.cart, cartItems } }
+    }
+    case 'CLEAR_CART': {
+      return { ...state, cart: { ...state.cart, cartItems: [] } }
     }
 
     case 'USER_SIGNIN': {
@@ -97,7 +98,6 @@ export const CartReducer = (state, action) => {
         cart: { ...state.cart, paymentMethod: action.payload }
       }
     }
-    
 
     default:
       return state

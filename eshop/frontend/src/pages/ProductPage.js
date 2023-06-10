@@ -19,7 +19,6 @@ import {
   MessageBox,
   getError,
   Store,
-  LocationContext,
   UploadingReducer,
   addToCartHandler
 } from '../imports'

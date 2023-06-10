@@ -16,7 +16,9 @@ import {
   ShippingAddressPage,
   SignupPage,
   PaymentPage,
-  useLocation
+  SubmitOrderPage,
+  OrderPage,
+  SearchPage
 } from './imports'
 
 
@@ -41,6 +43,9 @@ function App () {
                 <Route path='/signup' element={<SignupPage />} />
                 <Route path='/shipping' element={<ShippingAddressPage />} />
                 <Route path='/payment' element={<PaymentPage />} />
+                <Route path='/placeorder' element={<SubmitOrderPage />} />
+                <Route path='/order/:_id' element={<OrderPage/>}/>
+                <Route path='/search' element={<SearchPage />} />
               </Routes>
             </Container>
           </main>

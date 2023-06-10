@@ -14,6 +14,7 @@ import {
   addToCartHandler,
   axios,
   NavDropdown,
+  SearchBox,
 } from '../imports'
 import useCurrentLocation from '../hooks/useCurrentLocation'
 
@@ -52,6 +53,10 @@ function NavBar () {
         <LinkContainer to='/'>
           <Navbar.Brand>Eshop</Navbar.Brand>
         </LinkContainer>
+
+      <SearchBox/>
+
+
         {/* Cart icon */}
 
         <Nav

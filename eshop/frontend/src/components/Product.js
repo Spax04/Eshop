@@ -23,8 +23,6 @@ function Product (props) {
   const addToCart = async () => {
     const { data } = await axios.get(`/api/v1/products/${product._id}`)
     addToCartHandler(data, cart.cartItems, ctxDispatch)
-
-    navigate('/cart')
   }
 
   // When user drags an object, it contains product._id and keep it if format "text/plain"
@@ -55,7 +53,7 @@ function Product (props) {
         <Rating
           rating={product.rating.rate}
           numOfReviews={product.rating.count}
-        />
+        /> 
         {product.countInStock > 0 ? (
           <Button onClick={addToCart}>Add to card</Button>
         ) : (

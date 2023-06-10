@@ -22,7 +22,8 @@ import {
 // * React-Bootstrap
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { LinkContainer } from 'react-router-bootstrap'
-import { ListGroupItem, Nav } from 'react-bootstrap'
+import { ListGroupItem, Nav,InputGroup,FormControl } from 'react-bootstrap'
+
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -37,12 +38,14 @@ import Form from 'react-bootstrap/Form'
 import Spinner from 'react-bootstrap/Spinner'
 import Alert from 'react-bootstrap/Alert'
 
+
 // * Components
 import Loading from './components/Loading'
 import MessageBox from './components/MessageBox'
 import Product from './components/Product'
 import NavBar from './components/NavBar'
 import CheckoutSteps from './components/CheckoutSteps'
+import SearchBox from './components/SearchBox'
 
 // * Other
 import { getError, addToCartHandler } from './utils'
@@ -60,8 +63,17 @@ import SigninPage from './pages/SigninPage'
 import ShippingAddressPage from './pages/ShippingAddressPage'
 import SignupPage from './pages/SignupPage'
 import PaymentPage from './pages/PaymentPage';
+import SubmitOrderPage from './pages/SubmitOrderPage'
+import OrderPage from './pages/OrderPage'
+import SearchPage from './pages/SearchPage'
 
 export {
+  SearchPage,
+  SearchBox,
+  FormControl,
+  InputGroup,
+  OrderPage,
+  SubmitOrderPage,
   PaymentPage,
   SignupPage,
   CheckoutSteps,

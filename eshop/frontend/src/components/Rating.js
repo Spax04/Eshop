@@ -53,7 +53,8 @@ function Rating (props) {
           }
         ></i>
       </span>
-      <span>{numOfReviews} reviews</span>
+      <span>{numOfReviews}</span>
+      {props.caption? (<span>{props.caption}</span>):(<span></span>)}
     </div>
   )
 }

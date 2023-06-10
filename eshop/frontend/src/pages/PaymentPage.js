@@ -26,7 +26,7 @@ function PaymentPage () {
     e.preventDefault()
 
     ctxDispatch({type: "SAVE_PAYMENT_METHOD",payload:paymentMethodName})
-    localStorage.setItem('paymentMethod',paymentMethodName)
+    localStorage.setItem('paymentMethod',JSON.stringify(paymentMethodName))
     navigate('/placeorder');
   }
 
@@ -43,7 +43,7 @@ function PaymentPage () {
       <CheckoutSteps step1 step2 step3 />
 
       <Container className='small-container'>
-        <h1 className='my-3'>Sign Up</h1>
+        <h1 className='my-3'>Shipping Address</h1>
         <Form onSubmit={submitHandler}>
           <div className='mb-3'>
             <Form.Check
