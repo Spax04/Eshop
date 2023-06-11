@@ -17,6 +17,8 @@ import {
   Loading
 } from '../imports'
 
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -46,21 +48,25 @@ function SubmitOrderPage () {
     try {
       dispatch({ type: 'CREATE_REQUEST' })
 
-      const { data } = await axios.post('/api/v1/orders', {
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice
-      },{
-        headers: {authorization: `Bearer ${userInfo.token}`}
-      })
+      const { data } = await axios.post(
+        '/api/v1/orders',
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` }
+        }
+      )
 
-      dispatch({type:'CREATE_SECCEEDED'})
-      ctxDispatch({type:"CLEAR_CART"});
-      localStorage.removeItem("cartItems");
+      dispatch({ type: 'CREATE_SECCEEDED' })
+      ctxDispatch({ type: 'CLEAR_CART' })
+      localStorage.removeItem('cartItems')
 
       navigate(`/order/${data.order._id}`)
     } catch (err) {
@@ -183,15 +189,56 @@ function SubmitOrderPage () {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <div className='d-grid'>
-                    <Button
-                      type='button'
-                      onClick={submitOrderHandler}
-                      disabled={cart.cartItems.length === 0}
-                    >
-                      Submit
-                    </Button>
+                    {' '}
+                    {paymentMethod === 'PayPal' ? (
+                      <PayPalScriptProvider
+                        options={{
+                          'client-id':
+                            'AYb_Dhnx4M7M24EgfdWqzrfIaq7ALghGCS0UC58T_zTbeUq1RRw7UuguF-MTtPAWABVPh1BdKtaJewRv'
+                        }}
+                      >
+                        <PayPalButtons
+                
+                disabled={false}
+                forceReRender={[cart.totalPrice.toFixed(2), "USD", {"layout":"vertical"}]}
+                fundingSource={undefined}
+                createOrder={(data, actions) => {
+                    return actions.order
+                        .create({
+                            purchase_units: [
+                                {
+                                    amount: {
+                                        currency_code: "USD",
+                                        value: cart.totalPrice.toFixed(2),
+                                    },
+                                },
+                            ],
+                        })
+                        .then((orderId) => {
+                            // Your code here after create the order
+                            submitOrderHandler()
+                            return orderId;
+                        });
+                }}
+                onApprove={function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // Your code here after capture the order
+                        toast.success(`Transaction comlited by ${details.payer.name.given_name}`)
+                    });
+                }}
+            />
+                      </PayPalScriptProvider>
+                    ) : (
+                      <Button
+                        type='button'
+                        onClick={submitOrderHandler}
+                        disabled={cart.cartItems.length === 0}
+                      >
+                        Submit
+                      </Button>
+                    )}
                   </div>
-                  {loading && <Loading/>}
+                  {loading && <Loading />}
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
