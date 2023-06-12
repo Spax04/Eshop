@@ -198,35 +198,42 @@ function SubmitOrderPage () {
                         }}
                       >
                         <PayPalButtons
-                
-                disabled={false}
-                forceReRender={[cart.totalPrice.toFixed(2), "USD", {"layout":"vertical"}]}
-                fundingSource={undefined}
-                createOrder={(data, actions) => {
-                    return actions.order
-                        .create({
-                            purchase_units: [
-                                {
+                          disabled={cart.cartItems.length === 0}
+                          forceReRender={[
+                            cart.totalPrice.toFixed(2),
+                            'USD',
+                            { layout: 'vertical' }
+                          ]}
+                          fundingSource={undefined}
+                          createOrder={(data, actions) => {
+                            return actions.order
+                              .create({
+                                purchase_units: [
+                                  {
                                     amount: {
-                                        currency_code: "USD",
-                                        value: cart.totalPrice.toFixed(2),
-                                    },
-                                },
-                            ],
-                        })
-                        .then((orderId) => {
-                            // Your code here after create the order
-                            submitOrderHandler()
-                            return orderId;
-                        });
-                }}
-                onApprove={function (data, actions) {
-                    return actions.order.capture().then(function (details) {
-                        // Your code here after capture the order
-                        toast.success(`Transaction comlited by ${details.payer.name.given_name}`)
-                    });
-                }}
-            />
+                                      currency_code: 'USD',
+                                      value: cart.totalPrice.toFixed(2)
+                                    }
+                                  }
+                                ]
+                              })
+                              .then(orderId => {
+                                // Your code here after create the order
+                                submitOrderHandler()
+                                return orderId
+                              })
+                          }}
+                          onApprove={function (data, actions) {
+                            return actions.order
+                              .capture()
+                              .then(function (details) {
+                                // Your code here after capture the order
+                                toast.success(
+                                  `Transaction comlited by ${details.payer.name.given_name}`
+                                )
+                              })
+                          }}
+                        />
                       </PayPalScriptProvider>
                     ) : (
                       <Button

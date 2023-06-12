@@ -2,6 +2,7 @@ import express from 'express'
 import Order from '../models/orderModel.js'
 import expressAsyncHandler from 'express-async-handler'
 import { isAdmin, isAuth } from '../utils.js'
+import User from '../models/userModel.js'
 
 const orderRouter = express.Router()
 orderRouter.get(
@@ -14,6 +15,21 @@ orderRouter.get(
       res.send(order)
     } else {
       res.status(404).send({ message: 'Order not found' })
+    }
+  })
+)
+
+orderRouter.get(
+  '/history/:_id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const userById = await User.findById(req.params._id)
+      const orders = await Order.find({ user: userById })
+
+      res.status(201).send(orders)
+    } catch (err) {
+      res.status(404).send({ message: 'User not found' })
     }
   })
 )
@@ -36,4 +52,5 @@ orderRouter.post(
     res.status(201).send({ message: 'New Order Created', order })
   })
 )
+
 export default orderRouter

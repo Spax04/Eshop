@@ -18,8 +18,10 @@ import {
   PaymentPage,
   SubmitOrderPage,
   OrderPage,
-  SearchPage
+  SearchPage,
+  ProfilePage
 } from './imports'
+import HistoryOrderPage from './pages/HistoryOrderPage';
 
 
 function App () {
@@ -46,6 +48,8 @@ function App () {
                 <Route path='/placeorder' element={<SubmitOrderPage />} />
                 <Route path='/order/:_id' element={<OrderPage/>}/>
                 <Route path='/search' element={<SearchPage />} />
+                <Route path='/profile' element={<ProfilePage />} />
+                <Route path="/orderhistory" element={<HistoryOrderPage />} />
               </Routes>
             </Container>
           </main>

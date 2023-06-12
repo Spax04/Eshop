@@ -81,7 +81,7 @@ function NavBar () {
                 <NavDropdown.Item>User Profile</NavDropdown.Item>
               </LinkContainer>
               <LinkContainer to='/orderhistory'>
-                <NavDropdown.Item>User Profile</NavDropdown.Item>
+                <NavDropdown.Item>Order History</NavDropdown.Item>
               </LinkContainer>
               <NavDropdown.Divider />
               <Link onClick={signoutHandler} to="#signout" className='dropdown-item'>Sign out</Link>

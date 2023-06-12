@@ -66,8 +66,10 @@ import PaymentPage from './pages/PaymentPage';
 import SubmitOrderPage from './pages/SubmitOrderPage'
 import OrderPage from './pages/OrderPage'
 import SearchPage from './pages/SearchPage'
+import ProfilePage from './pages/ProfilePage'
 
 export {
+  ProfilePage,
   SearchPage,
   SearchBox,
   FormControl,

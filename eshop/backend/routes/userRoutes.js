@@ -3,6 +3,7 @@ import User from '../models/userModel.js'
 import expressAsyncHandler from 'express-async-handler'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '../utils.js'
+import { isAuth } from '../utils.js'
 
 const userRouter = express.Router()
 
@@ -45,6 +46,33 @@ userRouter.post(
       email: user.email,
       token: generateToken(user)
     })
+  })
+)
+
+userRouter.put(
+  '/update',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = bcrypt.hashSync(req.body.password);
+      }
+
+      const updatedUser = await user.save();
+
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        token: generateToken(updatedUser),
+      });
+    } else {
+      res.status(404).send({ message: 'User not found' });
+    }
   })
 )
 
