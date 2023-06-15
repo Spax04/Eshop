@@ -19,9 +19,10 @@ import {
 } from '../imports'
 
 function ProfilePage () {
-  const {
-    state: { userInfo }
-  } = useContext(Store)
+  const { state, dispatch: ctxDispatch } = useContext(Store)
+  const { userInfo } = state
+
+  const navigate = useNavigate()
 
   const [changePasswordField, setChangePasswordField] = useState(false)
 
@@ -32,33 +33,37 @@ function ProfilePage () {
   const [newName, setNewName] = useState('')
 
   const [changeEmailField, setChangeEmailField] = useState(false)
-
   const [newEmail, setNewEmail] = useState('')
 
-  const changePasswordState = () => {
-    if (changePasswordField) {
-      setChangePasswordField(false)
-    } else {
-      setChangePasswordField(true)
+  const UpdateUserData = async e => {
+    e.preventDefault()
+    const updatedUser = {
+      _id: userInfo._id,
+      email: newEmail === '' ? userInfo.email : newEmail,
+      name: newName === '' ? userInfo.name : newName,
+      currentPassword: currentPassword,
+      newPassword: newPassword
     }
+
+    try {
+      const { data } = await axios.put('/api/v1/users/update', updatedUser, {
+        headers: { authorization: `Bearer ${userInfo.token}` }
+      })
+      ctxDispatch({ type: 'USER_UPDATE', payload: data })
+      localStorage.setItem('userInfo', JSON.stringify(data))
+      toast.success('User was updated')
+    } catch (err) {
+      toast.error(getError(err))
+    }
+
+    navigate('/profile')
   }
 
- 
-  const changeUserName = () => {
-    //TODO UPDATE USER'S PASSWORD
-
-    
-    setChangeNameField(false)
-  }
-  const changeUserEmail = () => {
-    //TODO UPDATE USER'S PASSWORD
-    setChangeEmailField(false)
-  } 
-  
-  const changeUserPassword = () => {
-    //TODO UPDATE USER'S PASSWORD
-    setChangePasswordField(false)
-  }
+  useEffect(() => {
+    console.log(newName)
+    console.log(newEmail)
+    console.log(newPassword)
+  }, [newName, newEmail, newPassword])
 
   return (
     <div>
@@ -71,6 +76,8 @@ function ProfilePage () {
           <Card className='mb-3'>
             <Card.Body>
               <Card.Title>Profile details</Card.Title>
+
+              {/* //* Name Update field */}
               <div>
                 <strong>Name: </strong>
                 <Card.Text>{userInfo.name}</Card.Text>
@@ -85,8 +92,8 @@ function ProfilePage () {
                     Edit
                   </Link>
                 ) : (
-                  <Form onSubmit={changeUserName}>
-                    <Form.Group className='mb-3' controlId='fullName'>
+                  <Form onSubmit={e => UpdateUserData(e)}>
+                    <Form.Group className='mb-3' controlId='name'>
                       <Form.Label>New name: </Form.Label>
                       <Form.Control
                         value={newName}
@@ -103,8 +110,10 @@ function ProfilePage () {
                   </Form>
                 )}
               </div>
+              <hr />
+
+              {/* //* Email Update field */}
               <div>
-                <hr />
                 <strong>Email: </strong>
                 <Card.Text>{userInfo.email}</Card.Text>
                 {!changeEmailField ? (
@@ -118,11 +127,11 @@ function ProfilePage () {
                     Edit
                   </Link>
                 ) : (
-                  <Form onSubmit={changeUserEmail}>
-                    <Form.Group className='mb-3' controlId='fullName'>
+                  <Form onSubmit={e => UpdateUserData(e)}>
+                    <Form.Group className='mb-3' controlId='email'>
                       <Form.Label>New email: </Form.Label>
                       <Form.Control
-                        value={newName}
+                        value={newEmail}
                         type='email'
                         onChange={e => setNewEmail(e.target.value)}
                       />
@@ -137,14 +146,24 @@ function ProfilePage () {
                 )}
               </div>
               <hr />
+
+              {/* //* Password Update field */}
               <div>
                 <strong>Password: </strong>
                 {!changePasswordField ? (
-                  <Link onClick={changePasswordState}>Edit</Link>
+                  <Link
+                    onClick={
+                      changePasswordField
+                        ? () => setChangePasswordField(false)
+                        : () => setChangePasswordField(true)
+                    }
+                  >
+                    Edit
+                  </Link>
                 ) : (
-                  <Form onSubmit={changeUserPassword}>
+                  <Form onSubmit={e => UpdateUserData(e)}>
                     {/* Full name input area */}
-                    <Form.Group className='mb-3' controlId='fullName'>
+                    <Form.Group className='mb-3' controlId='password'>
                       <Form.Label>Current password</Form.Label>
                       <Form.Control
                         value={currentPassword}

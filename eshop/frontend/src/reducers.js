@@ -68,13 +68,18 @@ export const CartReducer = (state, action) => {
     }
 
     case 'USER_SIGNIN': {
-      // Filtering cuurent cart without specific item
+
 
       return { ...state, userInfo: action.payload }
     }
 
     case 'USER_SIGNUP': {
-      // Filtering cuurent cart without specific item
+
+
+      return { ...state, userInfo: action.payload }
+    }
+
+    case 'USER_UPDATE': {
 
       return { ...state, userInfo: action.payload }
     }
