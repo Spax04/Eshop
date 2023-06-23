@@ -10,10 +10,20 @@ import {
   Loading,
   getError,
   MessageBox,
-  UploadingReducer
-} from '../imports'
+  UploadingReducer,
+  Helmet
 
-//TODO: export all case strings into const!!!
+} from '../imports'
+import Carousel from 'react-multi-carousel'
+import 'react-multi-carousel/lib/styles.css'
+
+const responsive = {
+  main: {
+    breakpoint: { max: 3000, min: 0 },
+    items: 1,
+    slidesToSlide: 1 // optional, default to 1.
+  }
+}
 
 function HomePage () {
   const [{ loading, error, product }, dispatch] = useReducer(UploadingReducer, {
@@ -21,13 +31,6 @@ function HomePage () {
     error: '',
     product: []
   })
-
-
-
-
-
-
-
 
   useEffect(() => {
     const getProducts = async () => {
@@ -43,27 +46,81 @@ function HomePage () {
       //setProducts(res.data);
     }
     getProducts()
-
   }, [])
 
   return (
-    <div>
-      <h1>Products</h1>
-      <div className='main-inner'>
-        {loading ? (
-          <Loading />
-        ) : error ? (
-          <MessageBox variant='danger'>{error}</MessageBox>
-        ) : (
-          <Row>
-            {product.map(product => (
-              <Col key={product.token} lg={3} md={4} sm={6}>
-                <Product product={product} />
-              </Col>
-            ))}
-          </Row>
-        )}
+    <div className='homePage'>
+      <Helmet>
+        <title>Eshop - Home</title>
+      </Helmet>
+      <div className='carousel'>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          ssr={false} // means to render carousel on server-side.
+          infinite={true}
+          keyBoardControl={true}
+          autoPlay={true}
+          autoPlaySpeed={2000}
+          customTransition='all .5'
+          transitionDuration={500}
+          containerClass='carousel-container'
+          removeArrowOnDeviceType={'main'}
+          dotListClass='custom-dot-list-style'
+          itemClass='carousel-item-padding-40-px'
+        >
+          <div>
+            <img
+              className='carousel-image'
+              src='https://m.media-amazon.com/images/I/61PRFOFwuRL._SX3000_.jpg'
+              alt='carousel'
+            />
+          </div>
+          <div>
+            <img
+              className='carousel-image'
+              src='https://m.media-amazon.com/images/I/71Lv8RkYimL._SX3000_.jpg'
+              alt='carousel'
+            />
+          </div>
+          <div>
+            <img
+              className='carousel-image'
+              src='https://m.media-amazon.com/images/I/71tMlGMklPL._SX3000_.jpg'
+              alt='carousel'
+            />
+          </div>
+          <div>
+            <img
+              className='carousel-image'
+              src='https://m.media-amazon.com/images/I/71rzmcWTcTL._SX3000_.jpg'
+              alt='carousel'
+            />
+          </div>
+        </Carousel>
       </div>
+      <div className='homeContent'>
+
+        <h1>Products</h1>
+        <div className='main-inner'>
+          {loading ? (
+            <Loading />
+          ) : error ? (
+            <MessageBox variant='danger'>{error}</MessageBox>
+          ) : (
+            <Row>
+              {product.map(product => (
+                <Col key={product.token} lg={3} md={4} sm={6}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
+          )}
+        </div>
+      </div>
+
     </div>
   )
 }

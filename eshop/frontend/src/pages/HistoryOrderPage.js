@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react'
 import OrderHistory from '../components/OrderHistory';
 
-import { Store, axios, getError, toast } from '../imports';
+import { Store, axios, getError, toast,Helmet } from '../imports';
 
 
 const reducer = (state, { type }) => {
@@ -42,6 +42,9 @@ const HistoryOrderPage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Order History</title>
+      </Helmet>
       <h1>All Orders</h1>
       {orders.map((order) => (
         <div key={order._id}>

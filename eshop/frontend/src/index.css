@@ -85,3 +85,30 @@ main {
   background-color: #ffc000 !important;
   color: #000  !important;
 }
+
+.homeContent{
+
+  top: 250px;
+  position: relative;
+  z-index: 100;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 56px;
+  z-index: -9999;
+}
+
+.prodImg{
+  padding-top: 100px;
+  width: 400px;
+  height: 400px;
+}

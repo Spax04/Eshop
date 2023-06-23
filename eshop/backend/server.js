@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 5000
 const app = express()
 
 app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json()) // pars request to JSON
+app.use(express.urlencoded({ extended: true })) // pars encoded request to JSON
 
 // endpoints
 app.use('/api/v1/users', userRouter)

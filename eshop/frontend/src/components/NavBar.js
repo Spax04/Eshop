@@ -49,12 +49,7 @@ function NavBar () {
   return (
     <Navbar bg='dark' variant='dark'>
       <Container>
-        {/* Logo link */}
-        <LinkContainer to='/'>
-          <Navbar.Brand>Eshop</Navbar.Brand>
-        </LinkContainer>
-
-      <SearchBox/>
+      
 
 
         {/* Cart icon */}
@@ -62,9 +57,15 @@ function NavBar () {
         <Nav
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className='ms-auto w-50 justify-content-end'
+          className='ms-auto w-100 '
         >
-          {currentLocation.pathname === "/"? <span></span>:  <Link className='nav-link' to='/'>Back to Home</Link>}
+         {currentLocation.pathname === "/"? <span></span>:  <Link className='nav-link' to='/'> <i className='fas fa-arrow-left '></i></Link>}
+        {/* Logo link */}
+        <LinkContainer to='/'>
+          <Navbar.Brand>Eshop</Navbar.Brand>
+        </LinkContainer>
+
+      <SearchBox/>
          
           <Link to='/cart' className='nav-link'>
             <i className='fas fa-shopping-cart'></i>

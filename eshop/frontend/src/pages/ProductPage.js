@@ -20,7 +20,7 @@ import {
   getError,
   Store,
   UploadingReducer,
-  addToCartHandler
+  addToCartHandler,
 } from '../imports'
 
 function ProductPage () {
@@ -67,6 +67,10 @@ function ProductPage () {
 
   return (
     <div>
+
+      <Helmet>
+        <title>Product page</title>
+      </Helmet>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -74,11 +78,14 @@ function ProductPage () {
       ) : (
         <Row>
           <Col md={6}>
+            <div className='prodImg'>
             <img
               src={product.image}
               alt={product.title}
-              className='img-large'
+              className='w-100'
             />
+            </div>
+            
           </Col>
 
           {/* Product information 1*/}

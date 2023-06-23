@@ -9,7 +9,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { StoreProvider } from './store'
 
 // Base url to work with backend
-axios.default.baseURL = 'http://localhost:5000/'
+axios.defaults.baseURL = 'http://localhost:5000/'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
